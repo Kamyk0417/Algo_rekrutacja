@@ -68,8 +68,7 @@ def list_tasks(body, params):
     """GET /tasks - zwraca kod 200 i listę wszystkich zadań, np.
         [{"id": 1, "title": "Kupic mleko"}, {"id": 2, "title": "Nauczyc sie Gita"}]
     """
-    # TODO (Część 2)
-    return 501, {"error": "Not implemented"}
+    return 200, tasks
 
 
 def create_task(body, params):
@@ -82,8 +81,16 @@ def create_task(body, params):
     Hint: get_string(body, "title") zwraca tytuł albo "", jak go nie ma
     albo to nie jest string. Jak zmieniasz next_id, daj na początku funkcji: global next_id
     """
-    # TODO (Część 2)
-    return 501, {"error": "Not implemented"}
+    global next_id
+
+    title = get_string(body, "title")
+    if not is_valid_title(title):
+        return 400, {"error": "Niepoprawny tytul"}
+
+    task = {"id": next_id, "title": title.strip()}
+    tasks.append(task)
+    next_id += 1
+    return 201, task
 
 ROUTES = [
     ("GET", "/health", health),
